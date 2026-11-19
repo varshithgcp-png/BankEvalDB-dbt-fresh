@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: project-0ed6f225-6a6c-4bf9-87d
+    schema: bankeval_bronze
+    tables:
+      - name: Customers
+      - name: Accounts
+      - name: Transactions
+      - name: Branches
+      - name: AccountTypes
+      - name: TransactionTypes
+      - name: Loans
+      - name: LoanPayments
+      - name: Cards
