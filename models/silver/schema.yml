@@ -1,0 +1,137 @@
+version: 2
+
+models:
+  - name: silver_customers
+    description: "Latest unique customer record from Bronze customer data"
+    columns:
+      - name: CustomerID
+        tests:
+          - unique
+          - not_null
+
+  - name: silver_accounts
+    description: "Latest unique account record from Bronze account data"
+    columns:
+      - name: AccountID
+        tests:
+          - unique
+          - not_null
+
+      - name: CustomerID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_customers')
+                field: CustomerID
+
+      - name: AccountTypeID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_account_types')
+                field: AccountTypeID
+
+      - name: BranchID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_branches')
+                field: BranchID
+
+  - name: silver_transactions
+    description: "Clean and deduplicated transaction records"
+    columns:
+      - name: TransactionID
+        tests:
+          - unique
+          - not_null
+
+      - name: AccountID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_accounts')
+                field: AccountID
+
+      - name: TransactionTypeID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_transaction_types')
+                field: TransactionTypeID
+
+  - name: silver_branches
+    description: "Clean and deduplicated branch records"
+    columns:
+      - name: BranchID
+        tests:
+          - unique
+          - not_null
+
+  - name: silver_account_types
+    description: "Clean and deduplicated account type records"
+    columns:
+      - name: AccountTypeID
+        tests:
+          - unique
+          - not_null
+
+  - name: silver_transaction_types
+    description: "Clean and deduplicated transaction type records"
+    columns:
+      - name: TransactionTypeID
+        tests:
+          - unique
+          - not_null
+
+  - name: silver_loans
+    description: "Clean and deduplicated loan records"
+    columns:
+      - name: LoanID
+        tests:
+          - unique
+          - not_null
+
+      - name: CustomerID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_customers')
+                field: CustomerID
+
+      - name: BranchID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_branches')
+                field: BranchID
+
+  - name: silver_loan_payments
+    description: "Clean and deduplicated loan payment records"
+    columns:
+      - name: PaymentID
+        tests:
+          - unique
+          - not_null
+
+      - name: LoanID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_loans')
+                field: LoanID
+
+  - name: silver_cards
+    description: "Clean and deduplicated card records"
+    columns:
+      - name: CardID
+        tests:
+          - unique
+          - not_null
+
+      - name: AccountID
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_accounts')
+                field: AccountID
