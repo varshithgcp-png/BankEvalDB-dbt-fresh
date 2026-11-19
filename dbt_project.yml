@@ -19,9 +19,14 @@ clean-targets:
 
 models:
   bankevaldb:
+
     staging:
       +materialized: view
+
     silver:
       +materialized: table
+      +schema: bankeval_silver
+
     gold:
       +materialized: table
+      +schema: bankeval_gold

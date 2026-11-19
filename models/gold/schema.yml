@@ -1,0 +1,156 @@
+version: 2
+
+models:
+
+  # ---------------------------------------------------
+  # 1. Customer Account Summary
+  # ---------------------------------------------------
+  - name: gold_customer_account_summary
+    description: "Customer-level account and balance summary"
+
+    columns:
+      - name: CustomerID
+        description: "Unique customer identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: TotalAccounts
+        description: "Total number of accounts for the customer"
+
+      - name: TotalBalance
+        description: "Total account balance for the customer"
+
+      - name: ActiveAccounts
+        description: "Number of active accounts for the customer"
+
+
+  # ---------------------------------------------------
+  # 2. Customer Transaction Summary
+  # ---------------------------------------------------
+  - name: gold_customer_transaction_summary
+    description: "Customer-level transaction summary"
+
+    columns:
+      - name: CustomerID
+        description: "Unique customer identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: TotalTransactions
+        description: "Total number of transactions for the customer"
+
+      - name: TotalTransactionAmount
+        description: "Total transaction amount for the customer"
+
+      - name: AverageTransactionAmount
+        description: "Average transaction amount for the customer"
+
+      - name: LastTransactionDate
+        description: "Latest transaction date for the customer"
+
+
+  # ---------------------------------------------------
+  # 3. Branch Performance
+  # ---------------------------------------------------
+  - name: gold_branch_performance
+    description: "Branch-level account, customer, and loan performance summary"
+
+    columns:
+      - name: BranchID
+        description: "Unique branch identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: BranchName
+        description: "Branch name"
+
+      - name: TotalAccounts
+        description: "Total number of accounts in the branch"
+
+      - name: TotalCustomers
+        description: "Total unique customers in the branch"
+
+      - name: TotalAccountBalance
+        description: "Total account balance for the branch"
+
+      - name: TotalLoans
+        description: "Total number of loans in the branch"
+
+      - name: TotalLoanPrincipal
+        description: "Total loan principal amount for the branch"
+          # ---------------------------------------------------
+  # 4. Loan Payment Summary
+  # ---------------------------------------------------
+  - name: gold_loan_payment_summary
+    description: "Loan-level payment summary"
+
+    columns:
+      - name: LoanID
+        description: "Unique loan identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: CustomerID
+        description: "Customer associated with the loan"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_customers')
+                field: CustomerID
+
+      - name: BranchID
+        description: "Branch associated with the loan"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_branches')
+                field: BranchID
+
+      - name: Principal
+        description: "Original loan principal amount"
+
+      - name: TotalPayments
+        description: "Total number of payment records"
+
+      - name: TotalPaymentAmount
+        description: "Total amount paid for the loan"
+
+      - name: PaidPayments
+        description: "Number of payments with Paid status"
+
+      - name: PendingPayments
+        description: "Number of payments not in Paid status"
+
+      - name: LastPaidDate
+        description: "Latest payment date"
+          # ---------------------------------------------------
+  # 5. Customer Card Summary
+  # ---------------------------------------------------
+  - name: gold_customer_card_summary
+    description: "Customer-level card summary"
+
+    columns:
+      - name: CustomerID
+        description: "Unique customer identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: TotalCards
+        description: "Total number of cards for the customer"
+
+      - name: ActiveCards
+        description: "Number of active cards"
+
+      - name: InactiveCards
+        description: "Number of inactive cards"
+
+      - name: DebitCards
+        description: "Number of debit cards"
+
+      - name: CreditCards
+        description: "Number of credit cards"
